@@ -1,0 +1,28 @@
+{
+  "name": "travelconnect",
+  "version": "1.0.0",
+  "description": "Portal for travel agents and clients.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon node server.js"
+  },
+  "author": "Khalid Hosein",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.2",
+    "morgan": "^1.9.1",
+    "pg-promise": "^10.4.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config": "^0.3.0",
+    "eslint-plugin-import": "^2.20.1",
+    "nodemon": "^2.0.2"
+  }
+}
