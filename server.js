@@ -40,10 +40,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.use("/", ClientsController);
 
-app.get("/tripplanner", (req, res) => {
-  console.log(req.body);
-});
-
 // POST route to register a user
 app.post("/api/register", function(req, res) {
   const { email, password } = req.body;
