@@ -20,7 +20,7 @@ const mongoose = require("mongoose");
 const mongo_uri = "mongodb://localhost/react-auth";
 mongoose.connect(
   mongo_uri,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
 
   function(err) {
     if (err) {
@@ -34,44 +34,15 @@ mongoose.connect(
 const User = require("./models/userDB.js");
 const Client = require("./models/clientsDB.js");
 const ClientsController = require("./contollers/clientController");
-const ClientModel = mongoose.model("Client");
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-app.use("/clients", ClientsController);
+app.use("/", ClientsController);
 
-// app.get("/clients/edit/:id", (req, res) => {
-//   console.log("IN SERVER-->", req.params.id);
-
-//   Client.findById(req.params.id)
-//     .then(res => {
-//       console.log(res);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// });
-
-// app.post("/addclient", (req, res) => {
-//   console.log(req.body);
-//   let client = new ClientModel(req.body);
-
-//   client.fname = req.body.fname;
-//   client.lname = req.body.lname;
-//   client.email = req.body.clientemail;
-//   client.phone = req.body.phone;
-//   client.address = req.body.address;
-//   client.passport = req.body.passport;
-//   client
-//     .save()
-//     .then(res => {
-//       console.log("SAVED!!!---->", res);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// });
+app.get("/tripplanner", (req, res) => {
+  console.log(req.body);
+});
 
 // POST route to register a user
 app.post("/api/register", function(req, res) {

@@ -1,48 +1,66 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const router = express();
 const ClientModel = mongoose.model("Client");
 
-router
-  .get("/", (req, res) => {
-    ClientModel.find((err, docs) => {
-      if (!err) {
-        console.log("In DATABASE", docs);
-        return res.status(200).send(docs);
-      } else {
-        console.log(err);
-        res.send(err);
-      }
-    });
-  })
-
-  .delete("/:id", (req, res) => {
-    console.log("IN SERVER-->", req.params.id);
-
-    ClientModel.findByIdAndDelete(req.params.id)
-      .then(() => res.json("Client deleted!"))
-      .catch(err => res.status(400).json("Error: " + err));
-  })
-
-  .post("/addclient", (req, res) => {
-    console.log(req.body);
-    let client = new ClientModel(req.body);
-
-    client.fname = req.body.fname;
-    client.lname = req.body.lname;
-    client.email = req.body.clientemail;
-    client.phone = req.body.phone;
-    client.address = req.body.address;
-    client.passport = req.body.passport;
-    client
-      .save()
-      .then(res => {
-        console.log("SAVED!!!---->", res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+router.get("/clients", (req, res) => {
+  ClientModel.find((err, docs) => {
+    if (!err) {
+      console.log("Getting Clients", docs);
+      return res.status(200).send(docs);
+    } else {
+      console.log(err);
+      res.send(err);
+    }
   });
+});
+
+router.get("/clients/:id", function(req, res) {
+  ClientModel.findById(req.params.id, function(err, client) {
+    if (!client) {
+      res.status(404).send("No result found");
+    } else {
+      res.json(client);
+    }
+  });
+});
+
+router.post("/addclient", function(req, res) {
+  let client = new ClientModel(req.body);
+  client
+    .save()
+    .then(client => {
+      res.send(client);
+    })
+    .catch(function(err) {
+      res.status(422).send("Client add failed");
+    });
+});
+
+router.patch("/clients/:id", function(req, res) {
+  ClientModel.findByIdAndUpdate(req.params.id, req.body)
+    .then(function() {
+      res.json("Client updated");
+    })
+    .catch(function(err) {
+      res.status(422).send("Client update failed.");
+    });
+});
+
+router.delete("/clients/:id", function(req, res) {
+  ClientModel.findById(req.params.id, function(err, client) {
+    if (!client) {
+      res.status(404).send("Client not found");
+    } else {
+      ClientModel.findByIdAndRemove(req.params.id)
+        .then(function() {
+          res.status(200).json("Client deleted");
+        })
+        .catch(function(err) {
+          res.status(400).send("Client delete failed.");
+        });
+    }
+  });
+});
 
 module.exports = router;
